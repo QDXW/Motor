@@ -32,6 +32,7 @@
 .\objects\comm_can_fifo.o: .\Source\FWLib\inc\stm32f10x_wwdg.h
 .\objects\comm_can_fifo.o: .\Source\FWLib\inc\misc.h
 .\objects\comm_can_fifo.o: .\Source\System\Global_variable.h
+.\objects\comm_can_fifo.o: .\Source\System\main.h
 .\objects\comm_can_fifo.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\comm_can_fifo.o: .\Source\Modules\Comm\Comm.h
 .\objects\comm_can_fifo.o: .\Source\System\Project_File.h

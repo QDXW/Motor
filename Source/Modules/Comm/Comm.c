@@ -223,7 +223,6 @@ void Comm_CAN_SendOnePackage(uint16 stdId, uint8 *dataPtr, uint8 len)
 		i++;
 }
 
-
 /******************************************************************************/
 /* 从FIFO中获取数据并处理 */
 void Comm_CanRxDataGet(void)            
@@ -238,28 +237,100 @@ void Comm_CanRxDataGet(void)
 	{
 		switch(RxMsg.StdId)
 		{
-			case STDID_START:
-				Movement_start = 1;
-				Comm_CanDirectSend(STDID_START_ACHIEVE,buf,1);
-//				Comm_CanDirectSend(STDID_FILL_END,buf,1);
-				break;
+		/* WASH - 1 */
+		case STDID_BUMP_WASH:
+			/* TIME */
+			Bump_Wash = RxMsg.Data[0];
+			if(Bump_Wash)
+			{
+				/* 开始清洗 - 2 */
+				if (!Movement_X_ReadPosSensor())
+				{
+					Movement_X_GotoTarget(DIR_CCW, 20000);
+				}
+				Delay_ms_SW(200);
 
+				if (!Movement_Z_ReadPosSensor())
+				{
+					Movement_Z_GotoTarget(DIR_CW, 10000);
+				}
+				Delay_ms_SW(100);
+				Movement_X_GotoTarget(DIR_CW,2500);
+				Delay_ms_SW(200);
+				Movement_Z_ResetPosition();
+
+				/* 告知泵 - 3  */
+				buf[0] = 0X01;
+				Comm_CanDirectSend(STDID_BUMP_WASH_START,buf,1);
+				Delay_ms_SW(2);
+			}
+			else
+			{
+				/* 主板 - 停止 */
+				if (!Movement_X_ReadPosSensor())
+				{
+					Movement_X_GotoTarget(DIR_CCW, 10000);
+				}
+				Delay_ms_SW(200);
+
+				if (!Movement_Z_ReadPosSensor())
+				{
+					Movement_Z_GotoTarget(DIR_CW, 10000);
+				}
+				Delay_ms_SW(200);
+				Movement_Z_ResetPosition();
+				while(!Movement_X_ReadPosSensor());
+
+				/* 清洗 - 抽空气  */
+				buf[0] = 0X01;
+				Comm_CanDirectSend(STDID_BUMP_WASH_ACHIEVE,buf,1);
+				Delay_ms_SW(2);
+			}
+			break;
+
+			/* 抽液准备  */
 			case STDID_INFUSION_PREPARE:
 				ProcessCMD_Infusion(0);
+				break;
+
+			/* 抽液 - 抽液完成 */
+			case STDID_INFUSION_ACHIEVE:
+				Delay_ms_SW(800);
+				if (!Movement_X_ReadPosSensor())
+				{
+					Movement_X_GotoTarget(DIR_CCW, 20000);
+				}
+				Delay_ms_SW(200);
+				Comm_CanDirectSend(STDID_INFUSION_ACHIEVE_BLACK_ZERO,buf,1);
+				break;
+
+			/* 注液 */
+			case STDID_INJECT_PREPARE:
 				ProcessCMD_Inject(0);
 				break;
 
-			case STDID_EXHAUST_AIR:
-				Exhaust_Air = RxMsg.Data[0];
-				break;		
-
-			case STDID_RECYCLE_BEAD:
-				Recycle_Bead = RxMsg.Data[0];
+			/* 初始化 */
+			case STDID_SEND_BACK_ZERO:
+				Back_Zero_XZ();
 				break;
 
-			case STDID_SEND_INJUCET_TIME:
-				memcpy(&Injucet_time,RxMsg.Data,2);
-				break;
+			/* 泵初始化 */
+			case STDID_BUMP_INT_PREPARE:
+				if (!Movement_X_ReadPosSensor())
+				{
+					Movement_X_GotoTarget(DIR_CCW, 10000);
+				}
+				Delay_ms_SW(200);
+
+				if (!Movement_Z_ReadPosSensor())
+				{
+					Movement_Z_GotoTarget(DIR_CW, 10000);
+				}
+				Delay_ms_SW(200);
+
+				Movement_Z_ResetPosition();
+				Comm_CanDirectSend(STDID_BUMP_INT,buf,1);
+			break;
 
 			default:
 				break;

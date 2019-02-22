@@ -12,6 +12,7 @@
 #include "comDef.h"
 #include "stm32f10x.h"
 #include "Global_variable.h"
+#include "main.h"
 #include "string.h"
 #include "Comm.h"
 #include "motor.h"

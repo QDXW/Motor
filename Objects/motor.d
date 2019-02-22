@@ -32,6 +32,7 @@
 .\objects\motor.o: .\Source\FWLib\inc\stm32f10x_wwdg.h
 .\objects\motor.o: .\Source\FWLib\inc\misc.h
 .\objects\motor.o: .\Source\System\Global_variable.h
+.\objects\motor.o: .\Source\System\main.h
 .\objects\motor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\motor.o: .\Source\Modules\Comm\Comm.h
 .\objects\motor.o: .\Source\System\Project_File.h

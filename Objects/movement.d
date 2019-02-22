@@ -32,6 +32,7 @@
 .\objects\movement.o: .\Source\FWLib\inc\stm32f10x_wwdg.h
 .\objects\movement.o: .\Source\FWLib\inc\misc.h
 .\objects\movement.o: .\Source\System\Global_variable.h
+.\objects\movement.o: .\Source\System\main.h
 .\objects\movement.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\movement.o: .\Source\Modules\Comm\Comm.h
 .\objects\movement.o: .\Source\System\Project_File.h

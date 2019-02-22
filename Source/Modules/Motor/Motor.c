@@ -28,12 +28,13 @@ void Motor_X_Init(void)
 	/* CW */
 	GPIO_InitStructure.GPIO_Pin = PIN_MOTOR_X_DIR;
 	GPIO_Init(PORT_MOTOR_X_DIR, &GPIO_InitStructure);
-	Movement_X_MotorDriver_EN(LEVEL_LOW);
+	Movement_X_MotorDriver_EN(LEVEL_HIGH);
 	Movement_X_MotorDriver_DIR(DIR_CCW);
 	
 	/* TIM3_CH4 */
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+
 	/* STP */
 	GPIO_InitStructure.GPIO_Pin = PIN_MOTOR_X_STP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -42,13 +43,13 @@ void Motor_X_Init(void)
 	
 	  /* Time base structure */
 	TIM_TimeBaseStructure.TIM_Prescaler = 71;
-	TIM_TimeBaseStructure.TIM_Period = 999;
+	TIM_TimeBaseStructure.TIM_Period = 9999;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
-	/* Enable the TIM8 Update Interrupt */
+	/* Enable the TIM3 Update Interrupt */
 	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
@@ -85,7 +86,7 @@ void Motor_Z_Init(void)
 	GPIO_InitStructure.GPIO_Pin = PIN_MOTOR_Z_DIR;
 	GPIO_Init(PORT_MOTOR_Z_DIR, &GPIO_InitStructure);
 
-	Movement_Z_MotorDriver_EN(LEVEL_LOW);
+	Movement_Z_MotorDriver_EN(LEVEL_HIGH);
 	Movement_Z_MotorDriver_DIR(DIR_CCW);
 
 	/* TIM8_CH1 */
@@ -100,7 +101,7 @@ void Motor_Z_Init(void)
 
     /* Time base structure */
 	TIM_TimeBaseStructure.TIM_Prescaler = 71;
-	TIM_TimeBaseStructure.TIM_Period = 999;
+	TIM_TimeBaseStructure.TIM_Period = 9999;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
@@ -184,7 +185,7 @@ void Movement_Z_MotorDriver_PWM(FunctionalState status)
 void Movement_X_Start(void)
 {
 	/* 50% */
-	TIM3->ARR = 700;
+	TIM3->ARR = 300;
 	TIM3->CCR4 = TIM3->ARR / 2;
 	Movement_X_MotorDriver_EN(LEVEL_HIGH);
 	Movement_X_MotorDriver_PWM(ENABLE);
@@ -196,7 +197,7 @@ void Movement_X_Stop(void)
 	/* 50% */
 	TIM3->CCR4 = 0;
 	Movement_X_start = FALSE;
-	Movement_X_MotorDriver_EN(LEVEL_LOW);
+//	Movement_X_MotorDriver_EN(LEVEL_HIGH);
 	Movement_X_MotorDriver_PWM(DISABLE);
 }
 
@@ -204,9 +205,9 @@ void Movement_X_Stop(void)
 void Movement_Z_Start(void)
 {
 	/* 50% */
-	TIM8->ARR = 300;
+	TIM8->ARR = 1000;
 	TIM8->CCR1 = TIM8->ARR / 2;
-	Movement_Z_MotorDriver_EN(LEVEL_HIGH);
+	Movement_Z_MotorDriver_EN(LEVEL_LOW);
 	Movement_Z_MotorDriver_PWM(ENABLE);
 }
 
@@ -216,7 +217,7 @@ void Movement_Z_Stop(void)
 	/* 50% */
 	TIM8->CCR1 = 0;
 	Movement_Z_start = FALSE;
-	Movement_Z_MotorDriver_EN(LEVEL_LOW);
+//	Movement_Z_MotorDriver_EN(LEVEL_LOW);
 	Movement_Z_MotorDriver_PWM(DISABLE);
 }
 
@@ -229,40 +230,16 @@ void TIM8_UP_IRQHandler(void)
 		TIM_ClearFlag(TIM8, TIM_FLAG_Update);
 		if(Movement_Z_start)
 		{
-			if(Direction_Motor)
+			Movement_Z_pulseCount++;
+
+			/* Move specified steps */
+			if (Movement_Z_pulseCount >= Movement_Z_pulseNumber)
 			{
-				currPos.zPos++;
-				Movement_Z_pulseCount++;
+				Movement_Z_Stop();
 
-				if((Movement_Z_pulseCount >= Movement_Z_pulseNumber) || (currPos.zPos > 2000))
-				{
-					Movement_Z_Stop();
-
-					/* Clear flags */
-					Movement_Z_pulseCount = 0;
-					Movement_Z_start = FALSE;
-				}
-			}
-			else
-			{
-				currPos.zPos--;
-				Movement_Z_pulseCount++;
-
-				if (Movement_Z_ReadPosSensor())
-				{
-					Movement_Z_pulseCount = Movement_Z_pulseNumber;
-					Movement_Z_Stop();
-				}
-
-				/* Move specified steps */
-				if (Movement_Z_pulseCount >= Movement_Z_pulseNumber)
-				{
-					Movement_Z_Stop();
-
-					/* Clear flags */
-					Movement_Z_pulseCount = 0;
-					Movement_Z_start = FALSE;
-				}
+				/* Clear flags */
+				Movement_Z_pulseCount = 0;
+				Movement_Z_start = FALSE;
 			}
 		}
 	}
@@ -277,41 +254,16 @@ void TIM3_IRQHandler(void)
 		TIM_ClearFlag(TIM3, TIM_FLAG_Update);
 		if(Movement_X_start)
 		{
-			if(Direction_Motor)
+			Movement_X_pulseCount++;
+
+			/* Move specified steps */
+			if ((Movement_X_pulseCount >= Movement_X_pulseNumber))
 			{
-				currPos.xPos--;
-				Movement_X_pulseCount++;
+				Movement_X_Stop();
 
-				if (Movement_X_ReadPosSensor())
-				{
-					Movement_X_pulseCount = Movement_X_pulseNumber;
-					Movement_X_Stop();
-				}
-
-				/* Move specified steps */
-				if (Movement_X_pulseCount >= Movement_X_pulseNumber)
-				{
-					Movement_X_Stop();
-
-					/* Clear flags */
-					Movement_X_pulseCount = 0;
-					Movement_X_start = FALSE;
-				}
-			}
-			else
-			{
-				currPos.xPos++;
-				Movement_X_pulseCount++;
-
-				/* Move specified steps */
-				if ((Movement_X_pulseCount >= Movement_X_pulseNumber) || (currPos.xPos > 4204))
-				{
-					Movement_X_Stop();
-
-					/* Clear flags */
-					Movement_X_pulseCount = 0;
-					Movement_X_start = FALSE;
-				}
+				/* Clear flags */
+				Movement_X_pulseCount = 0;
+				Movement_X_start = FALSE;
 			}
 		}
 	}

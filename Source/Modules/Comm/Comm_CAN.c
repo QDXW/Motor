@@ -115,34 +115,34 @@ static void Comm_CAN_FilterInit(void)
 {
 	/* Set reception filter mechanism */
 	Comm_CAN_FilterNumInit(0,
-			STDID_RX_FILLING,
-			STDID_RX_TEST,
-			STDID_INFUSION_PREPARE,
-			STDID_SEND_INJUCET_TIME);
+		STDID_SEND_INJECT_CH2,
+		STDID_SEND_INFUSION,
+		STDID_INFUSION_ACHIEVE,
+		STDID_BUMP_INT_PREPARE);
 		
 	/* @TODO */
 	Comm_CAN_FilterNumInit(
-			1,
-			STDID_START,
-			STDID_START_ACHIEVE,
-			STDID_INJECT_PREPARE,
-			STDID_INFUSION_PREPARE_ACHIEVE);
+		1,
+		STDID_BUMP_WASH_START,
+		STDID_INFUSION_PREPARE,
+		STDID_INJECT_PREPARE,
+		STDID_BUMP_INT);
 
-	/* @TODO */
+	/* @TOD1 */
 	Comm_CAN_FilterNumInit(
 		2,
-		STDID_INJECT_PREPARE_ACHIEVE,
-		STDID_INJECT,
+		STDID_BUMP_WASH_ACHIEVE,
+		STDID_RX_INJECT_ACHIEVE,
 		STDID_INFUSION,
-		STDID_FILL_END);
+		STDID_SEND_BACK_ZERO);
 
-	/* @TODO */
+	/* @TOD2 */
 	Comm_CAN_FilterNumInit(
 		3,
-		STDID_EXHAUST_AIR,
-		STDID_EXHAUST_AIR_ACTON,
-		STDID_RECYCLE_BEAD,
-		STDID_RECYCLE_BEAD_ACTON);
+		STDID_BUMP_WASH,
+		STDID_BUMP_TEST,
+		STDID_SEND_INJECT_CH1,
+		STDID_INFUSION_ACHIEVE_BLACK_ZERO);
 }
 
 /******************************************************************************/
@@ -153,11 +153,11 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 	if (SET == CAN_GetITStatus(CAN1, CAN_IT_FMP0))
 	{
 		CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
-		
+
 		/* CAN获取到的数据入列 */
 		if(Comm_CanRxData(&RxMessage) == SUCCESS)
 			Comm_CAN_FIFO_RxDataPut(&RxMessage, &RxDataFIFO);
-		
+
 		CAN_ClearITPendingBit(CAN1, CAN_IT_FMP0);
 	}
 }

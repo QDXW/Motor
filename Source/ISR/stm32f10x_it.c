@@ -30,19 +30,58 @@ void SysTick_Handler(void)
 	/* Decrease TimingDelay */
 }
  
+/******************************************************************************/
+void EXTI0_IRQHandler(void)
+{
+
+}
+
+/******************************************************************************/
+void EXTI1_IRQHandler(void)
+{
+
+}
+
+/******************************************************************************/
+void EXTI2_IRQHandler(void)
+{
+
+}
+
+/******************************************************************************/
+void EXTI3_IRQHandler(void)
+{
+
+}
+
+/******************************************************************************/
+void EXTI4_IRQHandler(void)
+{
+
+}
+
+/******************************************************************************/
+void EXTI5_9_IRQHandler(void)
+{
+
+}
+
+/******************************************************************************/
 void EXTI15_10_IRQHandler(void)
 {
-	if(EXTI_GetITStatus(EXTI_Line11) != RESET) 
+	if(EXTI_GetITStatus(EXTI_Line11) != RESET)
 	{ 
-		EXTI_ClearITPendingBit(EXTI_Line11); 
 		Movement_X_pulseCount = Movement_X_pulseNumber;
 		Movement_X_Stop();
+		xPos = 0;
+		EXTI_ClearITPendingBit(EXTI_Line11);
 	} 
 	else if (EXTI_GetITStatus(EXTI_Line12) != RESET) 
-	{ 
-		EXTI_ClearITPendingBit(EXTI_Line12); 
+	{
 		Movement_Z_pulseCount = Movement_Z_pulseNumber;
 		Movement_Z_Stop();
+		zPos = 0;
+		EXTI_ClearITPendingBit(EXTI_Line12);
 	} 
 }
 void NMI_Handler(void)

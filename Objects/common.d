@@ -32,6 +32,7 @@
 .\objects\common.o: .\Source\FWLib\inc\stm32f10x_wwdg.h
 .\objects\common.o: .\Source\FWLib\inc\misc.h
 .\objects\common.o: .\Source\System\Global_variable.h
+.\objects\common.o: .\Source\System\main.h
 .\objects\common.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\common.o: .\Source\Modules\Comm\Comm.h
 .\objects\common.o: .\Source\System\Project_File.h

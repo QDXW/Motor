@@ -32,6 +32,7 @@
 .\objects\sensor.o: .\Source\FWLib\inc\stm32f10x_wwdg.h
 .\objects\sensor.o: .\Source\FWLib\inc\misc.h
 .\objects\sensor.o: .\Source\System\Global_variable.h
+.\objects\sensor.o: .\Source\System\main.h
 .\objects\sensor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\sensor.o: .\Source\Modules\Comm\Comm.h
 .\objects\sensor.o: .\Source\System\Project_File.h

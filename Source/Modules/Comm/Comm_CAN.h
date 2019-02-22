@@ -31,26 +31,32 @@
 /* Receive StdID */                             /* Sender Address   CMD Code */
 
 #define STDID_RX_INVALID                    		(0XFF)
-#define STDID_RX_FILLING							(0x10B)
-#define STDID_RX_TEST								(0x202)
 #define STDID_TX_STOP_FILLING						(0x109)
 
 #define STDID_START									(0x110)
 #define STDID_START_ACHIEVE							(0x111)
-#define STDID_FILL_END								(0x112)
 #define STDID_INFUSION_PREPARE						(0x113)
-#define STDID_INFUSION_PREPARE_ACHIEVE				(0x114)
-#define STDID_INJECT_PREPARE						(0x115)
-#define STDID_INJECT_PREPARE_ACHIEVE				(0x116)
-#define STDID_INJECT								(0x120)
+#define STDID_INJECT_PREPARE						(0x127)
+#define STDID_BUMP_TEST								(0X128)
+#define STDID_RX_INJECT								(0x120)
 #define STDID_INFUSION								(0x11F)
-#define STDID_EXHAUST_AIR							(0x123)
-#define STDID_EXHAUST_AIR_ACTON						(0x124)
-#define STDID_RECYCLE_BEAD							(0x125)
-#define STDID_RECYCLE_BEAD_ACTON					(0x126)
+#define STDID_BUMP_WASH								(0x125)
+#define STDID_BUMP_WASH_START						(0x128)
+#define STDID_RX_INJECT_ACHIEVE						(0x130)
 
-#define STDID_SEND_INJUCET_TIME						(0x302)
 
+
+#define STDID_BUMP_INFUSION							(0X300)
+#define STDID_INFUSION_ACHIEVE						(0x303)
+#define STDID_SEND_BACK_ZERO						(0x305)
+#define STDID_BUMP_INT_PREPARE						(0x307)
+#define STDID_BUMP_INT								(0x308)
+#define STDID_BUMP_WASH_ACHIEVE						(0x30A)
+
+#define STDID_SEND_INFUSION							(0X140)
+#define STDID_SEND_INJECT_CH1						(0X141)
+#define STDID_SEND_INJECT_CH2						(0X142)
+#define STDID_INFUSION_ACHIEVE_BLACK_ZERO			(0x143)
 
 /******************************************************************************/
 #ifdef  CAN_PA11_PA12

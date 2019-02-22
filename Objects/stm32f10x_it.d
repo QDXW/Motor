@@ -32,6 +32,7 @@
 .\objects\stm32f10x_it.o: .\Source\FWLib\inc\misc.h
 .\objects\stm32f10x_it.o: .\Source\System\Project_File.h
 .\objects\stm32f10x_it.o: .\Source\System\Global_variable.h
+.\objects\stm32f10x_it.o: .\Source\System\main.h
 .\objects\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\stm32f10x_it.o: .\Source\Modules\Comm\Comm.h
 .\objects\stm32f10x_it.o: .\Source\System\Project_File.h
