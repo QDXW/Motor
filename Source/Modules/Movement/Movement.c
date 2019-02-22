@@ -169,17 +169,17 @@ void ProcessCMD_Inject(uint8 Data)
 	Movement_X_Movement(0);
 	Delay_ms_SW(100);
 
-	/* 回初始位置  */
-	if(!Movement_X_ReadPosSensor())
-	{
-		Movement_X_GotoTarget(DIR_CCW, 20000);
-	}
-	Delay_ms_SW(100);
-	if (!Movement_Z_ReadPosSensor())
-	{
-		Movement_Z_GotoTarget(DIR_CW, 10000);
-	}
-	Delay_ms_SW(200);
+//	/* 回初始位置  */
+//	if(!Movement_X_ReadPosSensor())
+//	{
+//		Movement_X_GotoTarget(DIR_CCW, 20000);
+//	}
+//	Delay_ms_SW(100);
+//	if (!Movement_Z_ReadPosSensor())
+//	{
+//		Movement_Z_GotoTarget(DIR_CW, 10000);
+//	}
+//	Delay_ms_SW(200);
 
 	/* 注液计数  */
 	Inject_Times += 1;
@@ -207,9 +207,15 @@ void ProcessCMD_Infusion(uint8 Data)
 
 	if(!Movement_X_ReadPosSensor())
 	{
-		Movement_X_GotoTarget(DIR_CCW, 10000);
+		Movement_X_GotoTarget(DIR_CCW, 20000);
 	}
 	Delay_ms_SW(100);
+
+//	if(!Movement_Z_ReadPosSensor())
+//	{
+//		Movement_Z_GotoTarget(DIR_CW, 10000);
+//	}
+//	Delay_ms_SW(100);
 
 	Movement_Z_Movement(z_extractPos);
 	Delay_ms_SW(200);
@@ -255,7 +261,7 @@ void Back_Zero_XZ(void)
 
 	if (!Movement_Z_ReadPosSensor())
 	{
-		Movement_Z_GotoTarget(DIR_CW, 10000);
+		Movement_Z_GotoTarget(DIR_CW, 20000);
 	}
 	Delay_ms_SW(200);
 	Movement_Z_ResetPosition();
