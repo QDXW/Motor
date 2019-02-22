@@ -143,6 +143,14 @@ static void Comm_CAN_FilterInit(void)
 		STDID_BUMP_TEST,
 		STDID_SEND_INJECT_CH1,
 		STDID_INFUSION_ACHIEVE_BLACK_ZERO);
+
+	/* @TOD2 */
+	Comm_CAN_FilterNumInit(
+		4,
+		STDID_SEND_BACK_ZERO_ACHIEVE,
+		STDID_RX_INVALID,
+		STDID_RX_INVALID,
+		STDID_RX_INVALID);
 }
 
 /******************************************************************************/

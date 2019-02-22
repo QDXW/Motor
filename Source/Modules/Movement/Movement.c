@@ -152,7 +152,7 @@ void ProcessCMD_Inject(uint8 Data)
 
 	/* 通道2注液  */
 	Comm_CanDirectSend(STDID_SEND_INJECT_CH2,Buffer,2);
-	Delay_ms_SW(4000);
+	Delay_ms_SW(3500);
 
 	Movement_X_Movement(0);
 	Delay_ms_SW(100);
@@ -164,7 +164,7 @@ void ProcessCMD_Inject(uint8 Data)
 
 	/* 通道1注液  */
 	Comm_CanDirectSend(STDID_SEND_INJECT_CH1,Buffer,2);
-	Delay_ms_SW(4000);
+	Delay_ms_SW(3500);
 
 	Movement_X_Movement(0);
 	Delay_ms_SW(100);
@@ -190,13 +190,13 @@ void ProcessCMD_Inject(uint8 Data)
 	{
 		/* 注完5次  */
 		Buffer[0] = 0;
-		Comm_CanDirectSend(STDID_RX_INJECT_ACHIEVE,Buffer,2);
+		Comm_CanDirectSend(STDID_RX_INJECT_ACHIEVE,Buffer,1);
 	}
 	else
 	{
 		/* 未注完5次  */
 		Buffer[0] = 1;
-		Comm_CanDirectSend(STDID_RX_INJECT_ACHIEVE,Buffer,2);
+		Comm_CanDirectSend(STDID_RX_INJECT_ACHIEVE,Buffer,1);
 	}
 }
 
@@ -210,12 +210,6 @@ void ProcessCMD_Infusion(uint8 Data)
 		Movement_X_GotoTarget(DIR_CCW, 20000);
 	}
 	Delay_ms_SW(100);
-
-//	if(!Movement_Z_ReadPosSensor())
-//	{
-//		Movement_Z_GotoTarget(DIR_CW, 10000);
-//	}
-//	Delay_ms_SW(100);
 
 	Movement_Z_Movement(z_extractPos);
 	Delay_ms_SW(200);
@@ -252,10 +246,10 @@ void Return_Zero_Position(void)
 /******************************************************************************/
 void Back_Zero_XZ(void)
 {
-//	uint8 Buffer[2] = {0x00};
+	uint8 Buffer[2] = {0x00};
 	if (!Movement_X_ReadPosSensor())
 	{
-		Movement_X_GotoTarget(DIR_CCW, 10000);
+		Movement_X_GotoTarget(DIR_CCW, 20000);
 	}
 	Delay_ms_SW(200);
 
@@ -265,6 +259,8 @@ void Back_Zero_XZ(void)
 	}
 	Delay_ms_SW(200);
 	Movement_Z_ResetPosition();
+
+	Comm_CanDirectSend(STDID_SEND_BACK_ZERO_ACHIEVE, Buffer, 1);
 }
 
 /******************************************************************************/

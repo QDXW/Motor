@@ -295,13 +295,14 @@ void Comm_CanRxDataGet(void)
 
 			/* ³éÒº - ³éÒºÍê³É */
 			case STDID_INFUSION_ACHIEVE:
-				Delay_ms_SW(800);
+				Delay_ms_SW(1000);
 				if (!Movement_X_ReadPosSensor())
 				{
 					Movement_X_GotoTarget(DIR_CCW, 20000);
 				}
 				Delay_ms_SW(200);
-				Comm_CanDirectSend(STDID_INFUSION_ACHIEVE_BLACK_ZERO,buf,1);
+//				Comm_CanDirectSend(STDID_INFUSION_ACHIEVE_BLACK_ZERO,buf,1);
+				ProcessCMD_Inject(0);
 				break;
 
 			/* ×¢Òº */

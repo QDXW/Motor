@@ -57,6 +57,7 @@
 #define STDID_SEND_INJECT_CH1						(0X141)
 #define STDID_SEND_INJECT_CH2						(0X142)
 #define STDID_INFUSION_ACHIEVE_BLACK_ZERO			(0x143)
+#define STDID_SEND_BACK_ZERO_ACHIEVE				(0x144)
 
 /******************************************************************************/
 #ifdef  CAN_PA11_PA12
