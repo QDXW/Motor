@@ -21,7 +21,8 @@ uint32 z_runningSteps = 0;
 
 float xPos = 0;
 float x_distancePerStep = 8.0 / (2 * 200);
-float x_injectPosition = 50;
+float x_injectPosition = 22;
+float x_fusionPosition = 78;
 uint32 x_runningSteps = 0;
 
 /******************************************************************************/
@@ -86,7 +87,6 @@ void Movement_Z_GotoTarget(MOTOR_DIR dir,uint32 Movement_Z_Step)
 	Movement_Z_Start();
 	while(Movement_Z_start);
 }
-
 /******************************************************************************/
 void Movement_Z_Movement(float targetPos)
 {
@@ -183,7 +183,6 @@ void ProcessCMD_Inject(uint8 Data)
 
 	/* 注液计数  */
 	Inject_Times += 1;
-	Inject_Times = (Inject_Times>4)?0:Inject_Times;
 
 	/* 发送注液完成  */
 	if(Inject_Times > 4)
@@ -198,6 +197,7 @@ void ProcessCMD_Inject(uint8 Data)
 		Buffer[0] = 1;
 		Comm_CanDirectSend(STDID_RX_INJECT_ACHIEVE,Buffer,1);
 	}
+	Inject_Times = (Inject_Times>4)?0:Inject_Times;
 }
 
 /******************************************************************************/
@@ -214,7 +214,8 @@ void ProcessCMD_Infusion(uint8 Data)
 	Movement_Z_Movement(z_extractPos);
 	Delay_ms_SW(200);
 
-	Movement_X_GotoTarget(DIR_CW,10000);
+//	Movement_X_GotoTarget(DIR_CW,1000);
+	Movement_X_Movement(x_fusionPosition);
 	Delay_ms_SW(200);
 
 	Comm_CanDirectSend(STDID_SEND_INFUSION,Buffer,2);
@@ -223,6 +224,7 @@ void ProcessCMD_Infusion(uint8 Data)
 /******************************************************************************/
 void Return_Zero_Position(void)
 {
+	uint8 Buffer[2] = {0x00};
 	Delay_ms_SW(700);
 	if(!Movement_X_ReadPosSensor())
 	{
@@ -241,6 +243,7 @@ void Return_Zero_Position(void)
 
 	Movement_X_ResetPosition();
 	Movement_Z_ResetPosition();
+
 }
 
 /******************************************************************************/

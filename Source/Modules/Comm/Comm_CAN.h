@@ -40,24 +40,25 @@
 #define STDID_BUMP_TEST								(0X128)
 #define STDID_RX_INJECT								(0x120)
 #define STDID_INFUSION								(0x11F)
-#define STDID_BUMP_WASH								(0x125)
 #define STDID_BUMP_WASH_START						(0x128)
 #define STDID_RX_INJECT_ACHIEVE						(0x130)
-
-
 
 #define STDID_BUMP_INFUSION							(0X300)
 #define STDID_INFUSION_ACHIEVE						(0x303)
 #define STDID_SEND_BACK_ZERO						(0x305)
 #define STDID_BUMP_INT_PREPARE						(0x307)
 #define STDID_BUMP_INT								(0x308)
-#define STDID_BUMP_WASH_ACHIEVE						(0x30A)
 
+/***************************¹à×°ÃüÁî*******************************************/
 #define STDID_SEND_INFUSION							(0X140)
 #define STDID_SEND_INJECT_CH1						(0X141)
 #define STDID_SEND_INJECT_CH2						(0X142)
-#define STDID_INFUSION_ACHIEVE_BLACK_ZERO			(0x143)
+#define STDID_FILLING_ACHIEVE						(0x143)
 #define STDID_SEND_BACK_ZERO_ACHIEVE				(0x144)
+
+/***************************ÇåÏ´ÃüÁî*******************************************/
+#define STDID_PUMP_WASH_PREARE						(0X150)
+#define STDID_PUMP_WASH_ACHIEVE						(0X151)
 
 /******************************************************************************/
 #ifdef  CAN_PA11_PA12

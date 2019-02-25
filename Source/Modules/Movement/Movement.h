@@ -40,6 +40,7 @@ extern void Movement_Z_GotoOrigin(void);
 extern void Movement_X_ResetPosition(void);
 extern void Movement_Z_ResetPosition(void);
 extern void Movement_Z_Movement(float targetPos);
+extern void Movement_X_Movement(float targetPos);
 extern void Movement_Z_GotoInitialPosition(void);
 extern void Movement_X_GotoInitialPosition(void);
 extern void Movement_X_GotoTarget(MOTOR_DIR dir, uint32 Movement_X_Step);

@@ -7,6 +7,8 @@
 /******************************************************************************/
 #include "Comm.h"
 
+float x_washPosition = 75;
+
 /******************************************************************************/
 void Comm_Init(void)
 {
@@ -238,7 +240,7 @@ void Comm_CanRxDataGet(void)
 		switch(RxMsg.StdId)
 		{
 		/* WASH - 1 */
-		case STDID_BUMP_WASH:
+		case STDID_PUMP_WASH_PREARE:
 			/* TIME */
 			Bump_Wash = RxMsg.Data[0];
 			if(Bump_Wash)
@@ -255,7 +257,7 @@ void Comm_CanRxDataGet(void)
 					Movement_Z_GotoTarget(DIR_CW, 10000);
 				}
 				Delay_ms_SW(100);
-				Movement_X_GotoTarget(DIR_CW,2500);
+				Movement_X_Movement(x_washPosition);
 				Delay_ms_SW(200);
 				Movement_Z_ResetPosition();
 
@@ -266,6 +268,11 @@ void Comm_CanRxDataGet(void)
 			}
 			else
 			{
+				/* ÇåÏ´  */
+				buf[0] = 0X01;
+				Comm_CanDirectSend(STDID_PUMP_WASH_ACHIEVE,buf,1);
+				Delay_ms_SW(600);
+
 				/* Ö÷°å - Í£Ö¹ */
 				if (!Movement_X_ReadPosSensor())
 				{
@@ -280,11 +287,6 @@ void Comm_CanRxDataGet(void)
 				Delay_ms_SW(200);
 				Movement_Z_ResetPosition();
 				while(!Movement_X_ReadPosSensor());
-
-				/* ÇåÏ´ - ³é¿ÕÆø  */
-				buf[0] = 0X01;
-				Comm_CanDirectSend(STDID_BUMP_WASH_ACHIEVE,buf,1);
-				Delay_ms_SW(2);
 			}
 			break;
 
@@ -301,7 +303,6 @@ void Comm_CanRxDataGet(void)
 					Movement_X_GotoTarget(DIR_CCW, 20000);
 				}
 				Delay_ms_SW(200);
-//				Comm_CanDirectSend(STDID_INFUSION_ACHIEVE_BLACK_ZERO,buf,1);
 				ProcessCMD_Inject(0);
 				break;
 
@@ -319,19 +320,20 @@ void Comm_CanRxDataGet(void)
 			case STDID_BUMP_INT_PREPARE:
 				if (!Movement_X_ReadPosSensor())
 				{
-					Movement_X_GotoTarget(DIR_CCW, 10000);
+					Movement_X_GotoTarget(DIR_CCW, 20000);
 				}
 				Delay_ms_SW(200);
 
 				if (!Movement_Z_ReadPosSensor())
 				{
-					Movement_Z_GotoTarget(DIR_CW, 10000);
+					Movement_Z_GotoTarget(DIR_CW, 20000);
 				}
 				Delay_ms_SW(200);
 
 				Movement_Z_ResetPosition();
-				Comm_CanDirectSend(STDID_BUMP_INT,buf,1);
-			break;
+				buf[0] = 0;
+				Comm_CanDirectSend(STDID_FILLING_ACHIEVE, buf, 1);
+				break;
 
 			default:
 				break;
