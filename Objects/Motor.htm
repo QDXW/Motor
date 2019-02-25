@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Motor.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Motor.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Fri Feb 22 18:12:49 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Mon Feb 25 13:29:47 2019
 <BR><P>
 <H3>Maximum Stack Usage =        160 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -606,14 +606,13 @@ Global Symbols
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessCMD_Infusion
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Back_Zero_XZ
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Comm_CanRxDataGet
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Return_Zero_Position
 </UL>
 
 <P><STRONG><a name="[ba]"></a>Comm_CanRxData</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, comm.o(i.Comm_CanRxData))
 <BR><BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_LP_CAN1_RX0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[80]"></a>Comm_CanRxDataGet</STRONG> (Thumb, 384 bytes, Stack size 32 bytes, comm.o(i.Comm_CanRxDataGet))
+<P><STRONG><a name="[80]"></a>Comm_CanRxDataGet</STRONG> (Thumb, 402 bytes, Stack size 32 bytes, comm.o(i.Comm_CanRxDataGet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = Comm_CanRxDataGet &rArr; ProcessCMD_Inject &rArr; Comm_CanDirectSend &rArr; Comm_CAN_SendOnePackage &rArr; CAN_TransmitStatus
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessCMD_Inject
@@ -1101,8 +1100,8 @@ Global Symbols
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Comm_CAN_Init
 </UL>
 
-<P><STRONG><a name="[b3]"></a>Return_Zero_Position</STRONG> (Thumb, 90 bytes, Stack size 8 bytes, movement.o(i.Return_Zero_Position))
-<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = Return_Zero_Position &rArr; Comm_CanDirectSend &rArr; Comm_CAN_SendOnePackage &rArr; CAN_TransmitStatus
+<P><STRONG><a name="[b3]"></a>Return_Zero_Position</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, movement.o(i.Return_Zero_Position))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Return_Zero_Position &rArr; Movement_Z_GotoTarget &rArr; Movement_Z_Start &rArr; Movement_Z_MotorDriver_PWM
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Movement_Z_GotoInitialPosition
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Movement_X_ResetPosition
@@ -1112,7 +1111,6 @@ Global Symbols
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Movement_X_ReadPosSensor
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Movement_X_GotoTarget
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms_SW
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Comm_CanDirectSend
 </UL>
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>

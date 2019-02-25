@@ -302,7 +302,7 @@ void Comm_CanRxDataGet(void)
 				{
 					Movement_X_GotoTarget(DIR_CCW, 20000);
 				}
-				Delay_ms_SW(200);
+				Delay_ms_SW(100);
 				ProcessCMD_Inject(0);
 				break;
 

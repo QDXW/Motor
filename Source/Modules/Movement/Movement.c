@@ -212,11 +212,10 @@ void ProcessCMD_Infusion(uint8 Data)
 	Delay_ms_SW(100);
 
 	Movement_Z_Movement(z_extractPos);
-	Delay_ms_SW(200);
+	Delay_ms_SW(100);
 
-//	Movement_X_GotoTarget(DIR_CW,1000);
 	Movement_X_Movement(x_fusionPosition);
-	Delay_ms_SW(200);
+	Delay_ms_SW(100);
 
 	Comm_CanDirectSend(STDID_SEND_INFUSION,Buffer,2);
 }
@@ -224,7 +223,6 @@ void ProcessCMD_Infusion(uint8 Data)
 /******************************************************************************/
 void Return_Zero_Position(void)
 {
-	uint8 Buffer[2] = {0x00};
 	Delay_ms_SW(700);
 	if(!Movement_X_ReadPosSensor())
 	{
@@ -243,7 +241,6 @@ void Return_Zero_Position(void)
 
 	Movement_X_ResetPosition();
 	Movement_Z_ResetPosition();
-
 }
 
 /******************************************************************************/
@@ -254,13 +251,13 @@ void Back_Zero_XZ(void)
 	{
 		Movement_X_GotoTarget(DIR_CCW, 20000);
 	}
-	Delay_ms_SW(200);
+	Delay_ms_SW(100);
 
 	if (!Movement_Z_ReadPosSensor())
 	{
 		Movement_Z_GotoTarget(DIR_CW, 20000);
 	}
-	Delay_ms_SW(200);
+	Delay_ms_SW(100);
 	Movement_Z_ResetPosition();
 
 	Comm_CanDirectSend(STDID_SEND_BACK_ZERO_ACHIEVE, Buffer, 1);
