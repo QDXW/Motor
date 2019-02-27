@@ -205,7 +205,7 @@ void Movement_X_Stop(void)
 void Movement_Z_Start(void)
 {
 	/* 50% */
-	TIM8->ARR = 1000;
+	TIM8->ARR = 800;
 	TIM8->CCR1 = TIM8->ARR / 2;
 	Movement_Z_MotorDriver_EN(LEVEL_LOW);
 	Movement_Z_MotorDriver_PWM(ENABLE);

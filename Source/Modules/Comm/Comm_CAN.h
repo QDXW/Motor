@@ -50,15 +50,15 @@
 #define STDID_BUMP_INT								(0x308)
 
 /***************************¹à×°ÃüÁî*******************************************/
-#define STDID_SEND_INFUSION							(0X140)
-#define STDID_SEND_INJECT_CH1						(0X141)
-#define STDID_SEND_INJECT_CH2						(0X142)
+#define STDID_SEND_INFUSION							(0x140)
+#define STDID_SEND_INJECT_CH1						(0x141)
+#define STDID_SEND_INJECT_CH2						(0x142)
 #define STDID_FILLING_ACHIEVE						(0x143)
 #define STDID_SEND_BACK_ZERO_ACHIEVE				(0x144)
 
 /***************************ÇåÏ´ÃüÁî*******************************************/
-#define STDID_PUMP_WASH_PREARE						(0X150)
-#define STDID_PUMP_WASH_ACHIEVE						(0X151)
+#define STDID_PUMP_WASH_PREARE						(0x150)
+#define STDID_PUMP_WASH_ACHIEVE						(0x151)
 
 /******************************************************************************/
 #ifdef  CAN_PA11_PA12

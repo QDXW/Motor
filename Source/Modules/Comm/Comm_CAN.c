@@ -148,7 +148,7 @@ static void Comm_CAN_FilterInit(void)
 	Comm_CAN_FilterNumInit(
 		4,
 		STDID_PUMP_WASH_ACHIEVE,
-		STDID_RX_INVALID,
+		STDID_RX_INJECT,
 		STDID_RX_INVALID,
 		STDID_RX_INVALID);
 }

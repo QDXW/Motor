@@ -137,6 +137,7 @@ void Movement_X_Movement(float targetPos)
 void ProcessCMD_Inject(uint8 Data)
 {
 	uint8 Buffer[2] = {0x00};
+	uint8 Inject_Conut = 0;
 
 	if(!Movement_X_ReadPosSensor())
 	{
@@ -145,7 +146,7 @@ void ProcessCMD_Inject(uint8 Data)
 	Delay_ms_SW(100);
 
 	/*  */
-	Movement_Z_Movement(z_inject1stPos + Inject_Times * z_interval);
+	Movement_Z_Movement(z_inject1stPos);
 	Delay_ms_SW(100);
 	Movement_X_Movement(x_injectPosition);
 	Delay_ms_SW(100);
@@ -157,47 +158,53 @@ void ProcessCMD_Inject(uint8 Data)
 	Movement_X_Movement(0);
 	Delay_ms_SW(100);
 
-	Movement_Z_Movement(z_inject1stPos  + Inject_Times * z_interval + z_interval);
-	Delay_ms_SW(100);
-	Movement_X_Movement(x_injectPosition);
-	Delay_ms_SW(100);
-
-	/* 通道1注液  */
-	Comm_CanDirectSend(STDID_SEND_INJECT_CH1,Buffer,2);
-	Delay_ms_SW(3500);
-
-	Movement_X_Movement(0);
-	Delay_ms_SW(100);
-
-//	/* 回初始位置  */
-//	if(!Movement_X_ReadPosSensor())
-//	{
-//		Movement_X_GotoTarget(DIR_CCW, 20000);
-//	}
-//	Delay_ms_SW(100);
-//	if (!Movement_Z_ReadPosSensor())
-//	{
-//		Movement_Z_GotoTarget(DIR_CW, 10000);
-//	}
-//	Delay_ms_SW(200);
-
-	/* 注液计数  */
-	Inject_Times += 1;
-
-	/* 发送注液完成  */
-	if(Inject_Times > 4)
+	for(Inject_Conut = 0;Inject_Conut < Inject_Times;Inject_Conut++)
 	{
-		/* 注完5次  */
-		Buffer[0] = 0;
-		Comm_CanDirectSend(STDID_RX_INJECT_ACHIEVE,Buffer,1);
+		Movement_Z_Movement(z_inject1stPos  + ((Inject_Conut + 1) * z_interval));
+		Delay_ms_SW(100);
+		Movement_X_Movement(x_injectPosition);
+		Delay_ms_SW(100);
+
+		if(Inject_Conut < 3)
+		{
+			/* 通道1注液  */
+			Buffer[0] = 0;
+			Comm_CanDirectSend(STDID_RX_INJECT,Buffer,2);
+			Delay_ms_SW(3500);
+		}
+
+		if(3 == Inject_Conut)
+		{
+			/* 通道1注液  */
+			Buffer[0] = 1;
+			Comm_CanDirectSend(STDID_RX_INJECT,Buffer,2);
+			Delay_ms_SW(3500);
+		}
+
+		if(4 == Inject_Conut)
+		{
+			/* 通道1注液  */
+			Buffer[0] = 1;
+			Comm_CanDirectSend(STDID_SEND_INJECT_CH1,Buffer,2);
+			Delay_ms_SW(3500);
+		}
+
+		Movement_X_Movement(0);
+		Delay_ms_SW(100);
 	}
-	else
+
+	/* 回初始位置  */
+	if(!Movement_X_ReadPosSensor())
 	{
-		/* 未注完5次  */
-		Buffer[0] = 1;
-		Comm_CanDirectSend(STDID_RX_INJECT_ACHIEVE,Buffer,1);
+		Movement_X_GotoTarget(DIR_CCW, 20000);
 	}
-	Inject_Times = (Inject_Times>4)?0:Inject_Times;
+	Delay_ms_SW(100);
+	if (!Movement_Z_ReadPosSensor())
+	{
+		Movement_Z_GotoTarget(DIR_CW, 10000);
+	}
+
+	Comm_CanDirectSend(STDID_FILLING_ACHIEVE,Buffer,2);
 }
 
 /******************************************************************************/

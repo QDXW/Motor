@@ -19,5 +19,5 @@ uint16 Injucet_time = 900,Extract_Air_Count = 0;
 uint32 Movement_X_pulseCount = 0,Movement_X_pulseNumber = 0;
 uint32 Movement_Z_pulseCount = 0,Movement_Z_pulseNumber = 0;
 
-uint8 Inject_Times = 0;
+uint8 Inject_Times = 5;
 
