@@ -197,7 +197,6 @@ void Movement_X_Stop(void)
 	/* 50% */
 	TIM3->CCR4 = 0;
 	Movement_X_start = FALSE;
-//	Movement_X_MotorDriver_EN(LEVEL_HIGH);
 	Movement_X_MotorDriver_PWM(DISABLE);
 }
 
@@ -205,7 +204,7 @@ void Movement_X_Stop(void)
 void Movement_Z_Start(void)
 {
 	/* 50% */
-	TIM8->ARR = 800;
+	TIM8->ARR = 1000;
 	TIM8->CCR1 = TIM8->ARR / 2;
 	Movement_Z_MotorDriver_EN(LEVEL_LOW);
 	Movement_Z_MotorDriver_PWM(ENABLE);
@@ -217,7 +216,6 @@ void Movement_Z_Stop(void)
 	/* 50% */
 	TIM8->CCR1 = 0;
 	Movement_Z_start = FALSE;
-//	Movement_Z_MotorDriver_EN(LEVEL_LOW);
 	Movement_Z_MotorDriver_PWM(DISABLE);
 }
 
