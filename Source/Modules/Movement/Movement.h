@@ -35,6 +35,8 @@ extern uint32 x_runningSteps;
 
 /******************************************************************************/
 extern void Back_Zero_XZ(void);
+extern void Movement_X_Forever(void);
+extern void Movement_Z_Forever(void);
 extern void Return_Zero_Position(void);
 extern void Movement_Z_GotoOrigin(void);
 extern void Movement_X_ResetPosition(void);

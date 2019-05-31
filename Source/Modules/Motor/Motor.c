@@ -87,7 +87,7 @@ void Motor_Z_Init(void)
 	GPIO_Init(PORT_MOTOR_Z_DIR, &GPIO_InitStructure);
 
 	Movement_Z_MotorDriver_EN(LEVEL_HIGH);
-	Movement_Z_MotorDriver_DIR(DIR_CCW);
+	Movement_Z_MotorDriver_DIR(DIR_CW);
 
 	/* TIM8_CH1 */
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
@@ -185,7 +185,12 @@ void Movement_Z_MotorDriver_PWM(FunctionalState status)
 void Movement_X_Start(void)
 {
 	/* 50% */
-	TIM3->ARR = 300;
+#if PERISTALTIC_PUMP
+	TIM3->ARR = 1600;
+#endif
+#if MOVEMENT_MOTOR
+	TIM3->ARR = 500;
+#endif
 	TIM3->CCR4 = TIM3->ARR / 2;
 	Movement_X_MotorDriver_EN(LEVEL_HIGH);
 	Movement_X_MotorDriver_PWM(ENABLE);
@@ -204,9 +209,14 @@ void Movement_X_Stop(void)
 void Movement_Z_Start(void)
 {
 	/* 50% */
-	TIM8->ARR = 1000;
+#if PERISTALTIC_PUMP
+	TIM8->ARR = 1600;
+#endif
+#if MOVEMENT_MOTOR
+	TIM8->ARR = 600;
+#endif
 	TIM8->CCR1 = TIM8->ARR / 2;
-	Movement_Z_MotorDriver_EN(LEVEL_LOW);
+	Movement_Z_MotorDriver_EN(LEVEL_HIGH);
 	Movement_Z_MotorDriver_PWM(ENABLE);
 }
 

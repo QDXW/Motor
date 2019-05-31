@@ -230,7 +230,10 @@ void Comm_CAN_SendOnePackage(uint16 stdId, uint8 *dataPtr, uint8 len)
 void Comm_CanRxDataGet(void)            
 {
 	uint8 Status;
+#if MOVEMENT_MOTOR
 	uint8 buf[2] = {0x09,0x00};
+#endif
+
 	CAN_ReceiveDataTypedef RxMsg;
 	Status = Comm_CAN_FIFO_RxDataGet(&RxDataFIFO, &RxMsg);
 
@@ -239,6 +242,7 @@ void Comm_CanRxDataGet(void)
 	{
 		switch(RxMsg.StdId)
 		{
+#if MOVEMENT_MOTOR
 		/* WASH - 1 */
 		case STDID_PUMP_WASH_PREARE:
 			/* TIME */
@@ -264,6 +268,8 @@ void Comm_CanRxDataGet(void)
 				/* 告知泵 - 3  */
 				buf[0] = 0X01;
 				Comm_CanDirectSend(STDID_BUMP_WASH_START,buf,1);
+				Delay_ms_SW(400);
+				Comm_CanDirectSend(STDID_RX_INIPUMP,buf,1);
 				Delay_ms_SW(2);
 			}
 			else
@@ -297,7 +303,6 @@ void Comm_CanRxDataGet(void)
 
 			/* 抽液 - 抽液完成 */
 			case STDID_INFUSION_ACHIEVE:
-				Delay_ms_SW(1000);
 				if (!Movement_X_ReadPosSensor())
 				{
 					Movement_X_GotoTarget(DIR_CCW, 20000);
@@ -334,12 +339,27 @@ void Comm_CanRxDataGet(void)
 				buf[0] = 0;
 				Comm_CanDirectSend(STDID_FILLING_ACHIEVE, buf, 1);
 				break;
+#endif
 
-				/* 设置注液量 */
-//				case STDID_SEND_BACK_ZERO:
-//					Back_Zero_XZ();
-//					break;
+#if PERISTALTIC_PUMP
+			case STDID_BUMP_WASH_START:
+				if(RxMsg.Data[0])
+				{
+					Movement_X_Forever();
+					Movement_Z_Forever();
+				}
+				else
+				{
+					Movement_X_Stop();
+					Movement_Z_Stop();
+				}
 
+				break;
+			case STDID_PUMP_WASH_ACHIEVE:
+				Movement_X_Stop();
+				Movement_Z_Stop();
+				break;
+#endif
 			default:
 				break;
 		}

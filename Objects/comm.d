@@ -4,7 +4,7 @@
 .\objects\comm.o: .\Source\System\comDef.h
 .\objects\comm.o: .\Source\System\stm32f10x.h
 .\objects\comm.o: .\Source\CORE\core_cm3.h
-.\objects\comm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\comm.o: D:\Keil 5.0\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\comm.o: .\Source\System\system_stm32f10x.h
 .\objects\comm.o: .\Source\System\stm32f10x_conf.h
 .\objects\comm.o: .\Source\FWLib\inc\stm32f10x_adc.h
@@ -33,7 +33,7 @@
 .\objects\comm.o: .\Source\FWLib\inc\misc.h
 .\objects\comm.o: .\Source\System\Global_variable.h
 .\objects\comm.o: .\Source\System\main.h
-.\objects\comm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\comm.o: D:\Keil 5.0\ARM\ARMCC\Bin\..\include\string.h
 .\objects\comm.o: .\Source\Modules\Comm\Comm.h
 .\objects\comm.o: .\Source\Modules\Motor\motor.h
 .\objects\comm.o: .\Source\System\Project_File.h

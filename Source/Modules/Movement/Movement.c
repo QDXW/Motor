@@ -14,15 +14,15 @@ volatile uint8 Movement_Z_originWaiting = 0;
 float zPos = 0;
 float z_distancePerStep = (3.1415926 * 19.1) / (4 * 200);
 float z_washPos = 0;
-float z_extractPos = 102.25;
-float z_inject1stPos = 102.25 + 81.0;
-float z_interval = 15.5;
+float z_extractPos = 117.75;		//X距离抽液位置距离
+float z_inject1stPos = 117.75 + 100.75;	//X距离第一根试剂条的距离
+float z_interval = 15.5;			//试剂条之间的距离
 uint32 z_runningSteps = 0;
 
 float xPos = 0;
 float x_distancePerStep = 8.0 / (2 * 200);
-float x_injectPosition = 20;
-float x_fusionPosition = 78;
+float x_injectPosition = 20.5;		//注液下降高度
+float x_fusionPosition = 78;		//Z轴下降距离
 uint32 x_runningSteps = 0;
 
 /******************************************************************************/
@@ -32,21 +32,7 @@ void Movement_X_GotoTarget(MOTOR_DIR dir, uint32 Movement_X_Step)
 	Movement_X_pulseCount = 0;
 	Movement_X_start = TRUE;
 
-	switch(dir)
-	{
-		case 0:
-			Direction_Motor = DIR_CW;
-			Movement_X_MotorDriver_DIR(DIR_CW);
-
-			break;
-		case 1:
-			Direction_Motor = DIR_CCW;
-			Movement_X_MotorDriver_DIR(DIR_CCW);
-
-			break;
-		default:
-		break;
-	}
+	(dir)?Movement_X_MotorDriver_DIR(DIR_CCW):Movement_X_MotorDriver_DIR(DIR_CW);
 	Movement_X_Start();
 	while(Movement_X_start);
 }
@@ -54,15 +40,22 @@ void Movement_X_GotoTarget(MOTOR_DIR dir, uint32 Movement_X_Step)
 /******************************************************************************/
 void Movement_Z_GotoInitialPosition(void)
 {
-	Movement_Z_MotorDriver_DIR(DIR_CCW);
+	Movement_Z_MotorDriver_DIR(DIR_CW);
 	Movement_Z_Start();
 }
 
 /******************************************************************************/
-void Movement_X_GotoInitialPosition(void)
+void Movement_X_Forever(void)
 {
 	Movement_X_MotorDriver_DIR(DIR_CW);
 	Movement_X_Start();
+}
+
+/******************************************************************************/
+void Movement_Z_Forever(void)
+{
+	Movement_Z_MotorDriver_DIR(DIR_CW);
+	Movement_Z_Start();
 }
 
 /******************************************************************************/
@@ -72,18 +65,7 @@ void Movement_Z_GotoTarget(MOTOR_DIR dir,uint32 Movement_Z_Step)
 	Movement_Z_pulseCount = 0;
 	Movement_Z_start = TRUE;
 
-	switch(dir)
-	{
-	case 0:
-		Direction_Motor = DIR_CCW;
-		Movement_Z_MotorDriver_DIR(DIR_CCW);
-		break;
-	case 1:
-		Direction_Motor = DIR_CW;
-		Movement_Z_MotorDriver_DIR(DIR_CW);
-		break;
-	}
-
+	(dir)?Movement_Z_MotorDriver_DIR(DIR_CW):Movement_Z_MotorDriver_DIR(DIR_CCW);
 	Movement_Z_Start();
 	while(Movement_Z_start);
 }
@@ -138,6 +120,7 @@ void ProcessCMD_Inject(uint8 Data)
 {
 	uint8 Buffer[2] = {0x00};
 	uint8 Inject_Conut = 0;
+	uint16 Inject_Time = 5000;
 
 	if(!Movement_X_ReadPosSensor())
 	{
@@ -153,38 +136,47 @@ void ProcessCMD_Inject(uint8 Data)
 
 	/* 通道2注液  */
 	Comm_CanDirectSend(STDID_SEND_INJECT_CH2,Buffer,2);
-	Delay_ms_SW(2500);
+	Delay_ms_SW(Inject_Time);
 
 	Movement_X_Movement(0);
 	Delay_ms_SW(50);
 
 	for(Inject_Conut = 0;Inject_Conut < Inject_Times;Inject_Conut++)
 	{
+//		Delay_ms_SW(500);
 		Movement_Z_Movement(z_inject1stPos  + ((Inject_Conut + 1) * z_interval));
 		Movement_X_Movement(x_injectPosition);
 
-		if(Inject_Conut < 3)
+		if(Inject_Conut == 0)
+		{
+			/* 通道1注液  */
+			Buffer[0] = 1;
+			Comm_CanDirectSend(STDID_RX_INJECT,Buffer,2);
+			Delay_ms_SW(Inject_Time);
+		}
+
+		if((Inject_Conut > 0) && (Inject_Conut < 3))
 		{
 			/* 通道1注液  */
 			Buffer[0] = 0;
 			Comm_CanDirectSend(STDID_RX_INJECT,Buffer,2);
-			Delay_ms_SW(2500);
+			Delay_ms_SW(Inject_Time);
 		}
 
-		if(3 == Inject_Conut)
+		if(Inject_Conut == 3)
 		{
 			/* 通道1注液  */
-			Buffer[0] = 1;
+			Buffer[0] = 2;
 			Comm_CanDirectSend(STDID_RX_INJECT,Buffer,2);
-			Delay_ms_SW(2500);
+			Delay_ms_SW(Inject_Time);
 		}
 
-		if(4 == Inject_Conut)
+		if(Inject_Conut == 4)
 		{
 			/* 通道1注液  */
-			Buffer[0] = 1;
+			Buffer[0] = 0;
 			Comm_CanDirectSend(STDID_SEND_INJECT_CH1,Buffer,2);
-			Delay_ms_SW(2500);
+			Delay_ms_SW(Inject_Time);
 		}
 
 		Movement_X_Movement(0);
@@ -211,6 +203,7 @@ void ProcessCMD_Infusion(uint8 Data)
 {
 	uint8 Buffer[2] = {0x7F,0x7F};
 
+//	Delay_ms_SW(2000);
 	if(!Movement_X_ReadPosSensor())
 	{
 		Movement_X_GotoTarget(DIR_CCW, 20000);
@@ -242,8 +235,12 @@ void Return_Zero_Position(void)
 	}
 	Delay_ms_SW(100);
 
-	Movement_Z_GotoInitialPosition();
+	if(!Movement_Z_ReadPosSensor())
+	{
+		Movement_Z_GotoInitialPosition();
+	}
 	Delay_ms_SW(100);
+//	Movement_Z_GotoTarget(DIR_CW, 50);
 
 	Movement_X_ResetPosition();
 	Movement_Z_ResetPosition();
@@ -265,6 +262,7 @@ void Back_Zero_XZ(void)
 	}
 	Delay_ms_SW(50);
 	Movement_Z_ResetPosition();
+//	Movement_Z_GotoTarget(DIR_CW, 50);
 
 	Comm_CanDirectSend(STDID_SEND_BACK_ZERO_ACHIEVE, Buffer, 1);
 }

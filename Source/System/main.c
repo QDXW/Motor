@@ -9,8 +9,11 @@ int main(void)
 	Comm_Init();
 
 	Motor_Init();
-
+#if MOVEMENT_MOTOR
 	Return_Zero_Position();
+#endif
+//	Movement_Z_Forever();
+//	Movement_X_Forever();
 
 	while(1)
 	{

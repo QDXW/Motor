@@ -4,7 +4,7 @@
 .\objects\sensor.o: .\Source\System\comDef.h
 .\objects\sensor.o: .\Source\System\stm32f10x.h
 .\objects\sensor.o: .\Source\CORE\core_cm3.h
-.\objects\sensor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\sensor.o: D:\Keil 5.0\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\sensor.o: .\Source\System\system_stm32f10x.h
 .\objects\sensor.o: .\Source\System\stm32f10x_conf.h
 .\objects\sensor.o: .\Source\FWLib\inc\stm32f10x_adc.h
@@ -33,7 +33,7 @@
 .\objects\sensor.o: .\Source\FWLib\inc\misc.h
 .\objects\sensor.o: .\Source\System\Global_variable.h
 .\objects\sensor.o: .\Source\System\main.h
-.\objects\sensor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\sensor.o: D:\Keil 5.0\ARM\ARMCC\Bin\..\include\string.h
 .\objects\sensor.o: .\Source\Modules\Comm\Comm.h
 .\objects\sensor.o: .\Source\System\Project_File.h
 .\objects\sensor.o: .\Source\Modules\Motor\motor.h

@@ -24,5 +24,7 @@
 #include "Comm_CAN.h"
 #include "Comm_CAN_FIFO.h"
 
+#define PERISTALTIC_PUMP		1
+#define MOVEMENT_MOTOR			0
 
 #endif /* SOURCE_SYSTEM_PROJECT_FILE_H_ */
